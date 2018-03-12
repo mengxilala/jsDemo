@@ -1,0 +1,8 @@
+.canvas_warpper{
+    width: 1208px;
+    display: block;
+    margin: 0 auto;
+}
+#canvas2{
+   /* filter:blur(5px);*/
+}

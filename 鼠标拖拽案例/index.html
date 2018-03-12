@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+</head>
+<body>
+    <div class="divWrap" id="move1" style="width: 200px; height: 200px; background: Green; border: 1px solid red; position: absolute; top: 50%; left: 50%;margin-left:-100px;margin-top:-100px; cursor: move; -moz-user-select: none; -webkit-user-select: none;"></div>
+    <!-- <div class="divWrap" style="width: 200px; height: 200px; background: brown; border: 1px solid red; position: absolute; top: 300px; left: 100px;">
+        <h3 id="move2" style="height: 45px; line-height: 45px; font-size: 18px; background: red; margin: 0; cursor: move; -moz-user-select: none; -webkit-user-select: none;">Title--Move</h3>
+    </div> -->
+
+
+    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script>
+
+        var move1 = document.getElementById('move1');
+        var mX = 0, mY = 0;//定义鼠标X轴Y轴
+        var dX = 0, dY = 0;//定义div左、上位置
+        var x = 0, y = 0;
+        var distanceX = 0, distanceY = 0;
+        var isDown = false;//mousedown标记
+
+        move1.addEventListener('mousedown', function (event) {
+            console.log('mousedown');
+            var event = event || window.event;
+            mX = event.clientX;
+            mY = event.clientY;
+            dX = $('#move1').offset().left;
+            dY = $('#move1').offset().top;
+            isDown = true;//鼠标拖拽启动
+        });
+        document.addEventListener('mousemove', function (event) {
+
+            if (event.buttons) {
+                // console.log('mousemove');
+                var event = event || window.event;
+                x = event.clientX;//鼠标滑动时的X轴
+                y = event.clientY;//鼠标滑动时的Y轴
+
+                distanceX = x - mX + dX;
+                distanceY = y - mY + dY;
+
+                distanceX = distanceX < 0 ? 0 : distanceX;
+                distanceY = distanceY < 0 ? 0 : distanceY;
+                distanceX = distanceX >= window.innerWidth - 300 ? window.innerWidth - 300 : distanceX;
+                distanceY = distanceY >= window.innerHeight - 300 ? window.innerHeight - 300 : distanceY;
+                if (distanceX > window.innerWidth - 300 || distanceY > window.innerHeight - 300) {
+                    isDown = false;
+                }
+                // if (isDown) {
+                //     if (distanceX < 0) {
+                //         $('#move1').css("left", 0);//div动态位置赋值
+                //     } else if (distanceX > window.innerWidth - 300) {
+                //         $('#move1').css("left", distanceX);//div动态位置赋值
+                //     }
+                //     if (distanceY < 0) {
+                //         $('#move1').css("top", 0);//div动态位置赋值
+                //     } else if (distanceY > window.innerHeight - 300) {
+                //         $('#move1').css("top", distanceY);//div动态位置赋值
+                //     }
+                // }
+
+
+
+                if (isDown) {
+                    $('#move1').css({ "left": distanceX, "top": distanceY ,"marginLeft":'',"marginTop":''});
+                    console.log('x:',x,'mX:',mX, 'y:',y, 'mY:',mY);  //鼠标相对于上一次位置的距离
+                }
+
+            } else {
+                move1.addEventListener('mouseup', function () {
+                    console.log('mouseup');
+                    isDown = false;//鼠标拖拽结束
+                });
+            }
+        });
+        move1.addEventListener('mouseup', function () {
+            console.log('mouseup');
+            isDown = false;//鼠标拖拽结束
+        });
+
+        console.log(distanceX, distanceY)
+
+
+
+        // $(document).ready(function () {
+        //     $("#move1").dragDiv();//拖拽整个div
+        //     $("#move2").dragDiv(".divWrap");//拖拽div头部
+        // });
+    </script>
+</body>
+</html>

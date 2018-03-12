@@ -1,0 +1,47 @@
+<form name="myform" method="post" action="">
+    <input name="a" value="abc">
+    <br>
+    <input type="submit" value="提交1" onClick="return checkform()">//onClick="return checkform()" IE可以阻止,FF可以阻止
+    <br>
+    <br>
+    <input type="submit" value="提交2" onClick="checkform()">//onClick="checkform()" IE无法阻止,FF无法阻止
+    <br>
+    <br>
+    <input name="submit3" type="submit" value="提交3">//submit3.attachEvent("onclick",checkform) IE可以阻止,FF无法阻止
+    <br>
+    <br> 如果是直接写在onclick里面，我们直接用return checkform()就好了。
+    <br> 问题是有时候，我们又不乐意写在DOM元素里，非要搞什么动态绑定click事件。
+    <br> 动态绑定click事件请看提交3，IE可以阻止，FF无法阻止，浏览器不兼容！
+    <br>
+    <br>
+    <!--以下两个是解决方案，提交4是直接写在onclick里面，提交5是动态绑定事件的情况 -->
+    <input type="submit" value="提交4" onClick="checkform_success(event)">//onClick="checkform_success(event)" IE可以阻止,FF可以阻止
+    <br>
+    <br>
+    <input name="submit5" type="submit" value="提交5">//submit5.attachEvent("onclick",checkform_success) IE可以阻止,FF可以阻止
+    <br>
+    <br>
+</form>
+<script>
+    if (document.all) {//ie
+        document.myform.submit3.attachEvent("onclick", checkform);
+        document.myform.submit5.attachEvent("onclick", checkform_success);
+    } else {//ff
+        document.myform.submit3.addEventListener("click", checkform, false);
+        document.myform.submit5.addEventListener("click", checkform_success, false);
+    }
+    function checkform() {
+        if (document.myform.a.value == "abc") {
+            alert("验证不通过！");
+            returnfalse;
+        }
+    }
+    function checkform_success(e) {
+        e = e || window.event;
+        if (document.myform.a.value == "abc") {
+            alert("验证不通过！");
+            if (document.all) e.returnValue = false;//ie,window.event.returnValue=false阻止元素默认行为
+            else e.preventDefault();//火狐,event.preventDefault阻止元素默认行为
+        }
+    }
+</script>

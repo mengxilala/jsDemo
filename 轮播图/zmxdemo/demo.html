@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="jquery.js"></script>
+    <style>
+        .demo-wrap {
+            width: 800px;
+            height: 80px;
+            background: #ccc;
+            border: 1px solid red;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+        }
+         .demo-wrap ul {
+             margin: 0;
+             padding: 0;
+             list-style: none;
+             width: 121px;
+             height: 100%;
+             position: absolute;
+             top: 0;
+             left:0;
+         }
+          .demo-wrap li {
+              float: left;
+              width: 200px;
+              box-sizing: border-box;
+              height: 100%;
+              border: 1px solid blue;
+
+          }
+          .demo-wrap .active {
+              background: yellow;
+          }
+        
+    </style>
+</head>
+<body>
+    <button class="pre">pre</button>
+        <button class="next">next</button>
+    <div class="demo-wrap">
+        
+        <ul class="content">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+            <li>11</li>
+            <li>12</li>
+            <li>13</li>
+            <li>14</li>
+            <li>15</li>
+            <li>16</li>
+            <li>17</li>
+            <li>18</li>
+        </ul>
+    </div>
+    <script>
+        // li的宽度有border就要加border的值
+        var liWidth=$(".demo-wrap li").width()+2;
+        // 初始化Ul宽度
+        var ulWidth=($(".demo-wrap li").length+2)*liWidth+"px";
+        $(".demo-wrap ul").css({"width":ulWidth})
+        console.log(liWidth)
+        // 初始化移动li规个数
+        var num=0;
+        // li最大移动个数
+        var maxNum=$(".demo-wrap li").length-4;
+        
+        console.log(maxNum)
+        $(".pre").on("click",function(){
+            if(num>0){
+                num--;
+                $(".demo-wrap li").removeClass("active")
+               var left="-"+liWidth*(num-0)+"px";
+               console.log(left)
+                $(".content").css({"left":left})
+            }else {
+                alert("已经到第一页了")
+            }
+        })
+
+        $(".next").on("click",function(){
+            if(num<maxNum){
+               num++;
+                $(".demo-wrap li").removeClass("active")               
+               var left="-"+liWidth*(num-0)+"px";
+               console.log(left)
+                $(".content").css({"left":left})
+            }else{
+                alert("已经到最后一页了")
+            }
+        })
+        $(".demo-wrap li").on("click",function(){
+            $(this).addClass("active").siblings("li").removeClass("active")
+        })
+    </script>
+</body>
+</html>
